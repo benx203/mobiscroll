@@ -1,6 +1,5 @@
-// Français
-(function () {
-    mobiscroll.i18n.fr = {
+(function ($) {
+    $.mobiscroll.i18n.fr = {
         // Core
         setText: 'Terminer',
         cancelText: 'Annuler',
@@ -9,6 +8,7 @@
         selectedPluralText: '{count} sélectionnés',
         // Datetime component
         dateFormat: 'dd/mm/yy',
+        dateOrder: 'ddmmyy',
         dayNames: ['&#68;imanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'],
         dayNamesShort: ['&#68;im.', 'Lun.', 'Mar.', 'Mer.', 'Jeu.', 'Ven.', 'Sam.'],
         dayNamesMin: ['&#68;', 'L', 'M', 'M', 'J', 'V', 'S'],
@@ -20,11 +20,11 @@
         minuteText: 'Minutes',
         secText: 'Secondes',
         timeFormat: 'HH:ii',
+        timeWheels: 'HHii',
         yearText: 'Année',
         nowText: 'Maintenant',
         pmText: 'après-midi',
         amText: 'avant-midi',
-        todayText: "Aujourd'hui",
         // Calendar component
         firstDay: 1,
         dateText: 'Date',
@@ -57,4 +57,4 @@
         decimalSeparator: ',',
         thousandsSeparator: ' '
     };
-})();
+})(jQuery);

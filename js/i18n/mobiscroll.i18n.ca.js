@@ -1,6 +1,5 @@
-// Català
-(function () {
-    mobiscroll.i18n.ca = {
+(function ($) {
+    $.mobiscroll.i18n.ca = {
         // Core
         setText: 'Acceptar',
         cancelText: 'Cancel·lar',
@@ -9,6 +8,7 @@
         selectedPluralText: '{count} seleccionats',
         // Datetime component
         dateFormat: 'dd/mm/yy',
+        dateOrder: 'ddmmyy',
         dayNames: ['Diumenge', 'Dilluns', 'Dimarts', 'Dimecres', 'Dijous', 'Divendres', 'Dissabte'],
         dayNamesShort: ['Dg', 'Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds'],
         dayNamesMin: ['Dg', 'Dl', 'Dt', 'Dc', 'Dj', 'Dv', 'Ds'],
@@ -20,11 +20,11 @@
         monthText: 'Mes',
         secText: 'Segons',
         timeFormat: 'HH:ii',
+        timeWheels: 'HHii',
         yearText: 'Any',
         nowText: 'Ara',
         pmText: 'pm',
         amText: 'am',
-        todayText: 'Avui',
         // Calendar component
         firstDay: 1,
         dateText: 'Data',
@@ -54,4 +54,4 @@
         offText: 'No',
         onText: 'Si'
     };
-})();
+})(jQuery);

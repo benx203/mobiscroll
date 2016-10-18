@@ -1,15 +1,12 @@
 /*!
- * Mobiscroll v3.0.0-beta6
+ * Mobiscroll v2.17.2
  * http://mobiscroll.com
  *
- * Copyright 2010-2016, Acid Media
+ * Copyright 2010-2015, Acid Media
  * Licensed under the MIT license.
  *
  */
-
-var mobiscroll = mobiscroll || {};
-
-(function (window, document, undefined) {
+(function ($, undefined) {
 
     function testProps(props) {
         var i;
@@ -42,7 +39,7 @@ var mobiscroll = mobiscroll || {};
                 if (instances[this.id]) {
                     instances[this.id].destroy();
                 }
-                new mobiscroll.classes[options.component || 'Scroller'](this, options);
+                new $.mobiscroll.classes[options.component || 'Scroller'](this, options);
             });
         }
 
@@ -66,47 +63,28 @@ var mobiscroll = mobiscroll || {};
     }
 
     var ms,
-        platform,
-        vers,
-        $ = typeof jQuery == 'undefined' ? mobiscroll.$ : jQuery,
         id = +new Date(),
         instances = {},
         extend = $.extend,
-        userAgent = navigator.userAgent,
-        device = userAgent.match(/Android|iPhone|iPad|iPod|Windows Phone|Windows|MSIE/i),
         mod = document.createElement('modernizr').style,
         has3d = testProps(['perspectiveProperty', 'WebkitPerspective', 'MozPerspective', 'OPerspective', 'msPerspective']),
         hasFlex = testProps(['flex', 'msFlex', 'WebkitBoxDirection']),
         prefix = testPrefix(),
-        pr = prefix.replace(/^\-/, '').replace(/\-$/, '').replace('moz', 'Moz'),
-        version = [];
+        pr = prefix.replace(/^\-/, '').replace(/\-$/, '').replace('moz', 'Moz');
 
-    if (/Android/i.test(device)) {
-        platform = 'android';
-        vers = navigator.userAgent.match(/Android\s+([\d\.]+)/i);
-        if (vers) {
-            version = vers[0].replace('Android ', '').split('.');
-        }
-    } else if (/iPhone|iPad|iPod/i.test(device)) {
-        platform = 'ios';
-        vers = navigator.userAgent.match(/OS\s+([\d\_]+)/i);
-        if (vers) {
-            version = vers[0].replace(/_/g, '.').replace('OS ', '').split('.');
-        }
-    } else if (/Windows Phone/i.test(device)) {
-        platform = 'wp';
-    } else if (/Windows|MSIE/i.test(device)) {
-        platform = 'windows';
-    }
+    $.fn.mobiscroll = function (method) {
+        extend(this, $.mobiscroll.components);
+        return init(this, method, arguments);
+    };
 
-    ms = mobiscroll = {
-        $: $,
-        version: '3.0.0-beta6',
+    ms = $.mobiscroll = $.mobiscroll || {
+        version: '2.17.2',
         util: {
             prefix: prefix,
             jsPrefix: pr,
             has3d: has3d,
             hasFlex: hasFlex,
+            isOldAndroid: /android [1-3]/i.test(navigator.userAgent),
             preventClick: function () {
                 // Prevent ghost click
                 ms.tapped++;
@@ -154,34 +132,59 @@ var mobiscroll = mobiscroll || {};
             getCoord: function (e, c, page) {
                 var ev = e.originalEvent || e,
                     prop = (page ? 'page' : 'client') + c;
-
-                // Multi touch support
-                if (ev.targetTouches && ev.targetTouches[0]) {
-                    return ev.targetTouches[0][prop];
-                }
-
-                if (ev.changedTouches && ev.changedTouches[0]) {
-                    return ev.changedTouches[0][prop];
-                }
-
-                return e[prop];
+                return ev.changedTouches ? ev.changedTouches[0][prop] : e[prop];
             },
             getPosition: function (t, vertical) {
-                var style = getComputedStyle(t[0]),
+                var style = window.getComputedStyle ? getComputedStyle(t[0]) : t[0].style,
                     matrix,
                     px;
 
-                $.each(['t', 'webkitT', 'MozT', 'OT', 'msT'], function (i, v) {
-                    if (style[v + 'ransform'] !== undefined) {
-                        matrix = style[v + 'ransform'];
-                        return false;
-                    }
-                });
-                matrix = matrix.split(')')[0].split(', ');
-                px = vertical ? (matrix[13] || matrix[5]) : (matrix[12] || matrix[4]);
-
+                if (has3d) {
+                    $.each(['t', 'webkitT', 'MozT', 'OT', 'msT'], function (i, v) {
+                        if (style[v + 'ransform'] !== undefined) {
+                            matrix = style[v + 'ransform'];
+                            return false;
+                        }
+                    });
+                    matrix = matrix.split(')')[0].split(', ');
+                    px = vertical ? (matrix[13] || matrix[5]) : (matrix[12] || matrix[4]);
+                } else {
+                    px = vertical ? style.top.replace('px', '') : style.left.replace('px', '');
+                }
 
                 return px;
+            },
+            addIcon: function ($control, ic) {
+                var icons = {},
+                    $parent = $control.parent(),
+                    errorMsg = $parent.find('.mbsc-err-msg'),
+                    align = $control.attr('data-icon-align') || 'left',
+                    icon = $control.attr('data-icon');
+
+                // Wrap input
+                $('<span class="mbsc-input-wrap"></span>').insertAfter($control).append($control);
+
+                if (errorMsg) {
+                    $parent.find('.mbsc-input-wrap').append(errorMsg);
+                }
+
+                if (icon) {
+                    if (icon.indexOf('{') !== -1) {
+                        icons = JSON.parse(icon);
+                    } else {
+                        icons[align] = icon;
+                    }
+                }
+
+                if (icon || ic) {
+                    extend(icons, ic);
+
+                    $parent
+                        .addClass((icons.right ? 'mbsc-ic-right ' : '') + (icons.left ? ' mbsc-ic-left' : ''))
+                        .find('.mbsc-input-wrap')
+                        .append(icons.left ? '<span class="mbsc-input-ic mbsc-left-ic mbsc-ic mbsc-ic-' + icons.left + '"></span>' : '')
+                        .append(icons.right ? '<span class="mbsc-input-ic mbsc-right-ic mbsc-ic mbsc-ic-' + icons.right + '"></span>' : '');
+                }
             },
             constrain: function (val, min, max) {
                 return Math.max(min, Math.min(val, max));
@@ -190,29 +193,6 @@ var mobiscroll = mobiscroll || {};
                 if ('vibrate' in navigator) {
                     navigator.vibrate(time || 50);
                 }
-            },
-            throttle: function (fn, threshhold) {
-                var last,
-                    timer;
-
-                threshhold = threshhold || 100;
-
-                return function () {
-                    var context = this,
-                        now = +new Date(),
-                        args = arguments;
-
-                    if (last && now < last + threshhold) {
-                        clearTimeout(timer);
-                        timer = setTimeout(function () {
-                            last = now;
-                            fn.apply(context, args);
-                        }, threshhold);
-                    } else {
-                        last = now;
-                        fn.apply(context, args);
-                    }
-                };
             }
         },
         tapped: 0,
@@ -230,44 +210,19 @@ var mobiscroll = mobiscroll || {};
             menustrip: {},
             progress: {}
         },
-        platform: {
-            name: platform,
-            majorVersion: version[0],
-            minorVersion: version[1]
-        },
         i18n: {},
         instances: instances,
         classes: {},
         components: {},
-        settings: {},
+        defaults: {
+            context: 'body',
+            mousewheel: true,
+            vibrate: true
+        },
         setDefaults: function (o) {
-            extend(this.settings, o);
+            extend(this.defaults, o);
         },
         presetShort: function (name, c, p) {
-            ms[name] = function (selector, s) {
-                var inst,
-                    instIds,
-                    ret = {},
-                    options = s || {};
-
-                $.extend(options, {
-                    preset: p === false ? undefined : name
-                });
-
-                $(selector).each(function () {
-                    if (instances[this.id]) {
-                        instances[this.id].destroy();
-                    }
-
-                    inst = new ms.classes[c || 'Scroller'](this, options);
-                    ret[this.id] = inst;
-                });
-
-                instIds = Object.keys(ret);
-
-                return instIds.length == 1 ? ret[instIds[0]] : ret;
-            };
-
             this.components[name] = function (s) {
                 return init(this, extend(s, {
                     component: c,
@@ -277,14 +232,7 @@ var mobiscroll = mobiscroll || {};
         }
     };
 
-    $.mobiscroll = mobiscroll;
-
-    $.fn.mobiscroll = function (method) {
-        extend(this, mobiscroll.components);
-        return init(this, method, arguments);
-    };
-
-    mobiscroll.classes.Base = function (el, settings) {
+    $.mobiscroll.classes.Base = function (el, settings) {
 
         var lang,
             preset,
@@ -292,7 +240,7 @@ var mobiscroll = mobiscroll || {};
             theme,
             themeName,
             defaults,
-            ms = mobiscroll,
+            ms = $.mobiscroll,
             util = ms.util,
             getCoord = util.getCoord,
             that = this;
@@ -302,13 +250,6 @@ var mobiscroll = mobiscroll || {};
         that._presetLoad = function () {};
 
         that._init = function (ss) {
-            var key;
-
-            // Reset settings object
-            for (key in that.settings) {
-                delete that.settings[key];
-            }
-
             s = that.settings;
 
             // Update original user settings
@@ -316,7 +257,7 @@ var mobiscroll = mobiscroll || {};
 
             // Load user defaults
             if (that._hasDef) {
-                defaults = ms.settings;
+                defaults = ms.defaults;
             }
 
             // Create settings object
@@ -346,10 +287,7 @@ var mobiscroll = mobiscroll || {};
             }
 
             if (that._hasTheme) {
-                that.trigger('onThemeLoad', {
-                    lang: lang,
-                    settings: settings
-                });
+                that.trigger('onThemeLoad', [lang, settings]);
             }
 
             // Update settings object
@@ -383,14 +321,11 @@ var mobiscroll = mobiscroll || {};
         /**
          * Attach tap event to the given element.
          */
-        that.tap = function (el, handler, prevent, tolerance) {
+        that.tap = function (el, handler, prevent) {
             var startX,
                 startY,
                 target,
-                moved,
-                startTime;
-
-            tolerance = tolerance || 9;
+                moved;
 
             function onStart(ev) {
                 if (!target) {
@@ -402,20 +337,19 @@ var mobiscroll = mobiscroll || {};
                     startX = getCoord(ev, 'X');
                     startY = getCoord(ev, 'Y');
                     moved = false;
-                    startTime = new Date();
                 }
             }
 
             function onMove(ev) {
                 // If movement is more than 20px, don't fire the click event handler
-                if (target && !moved && (Math.abs(getCoord(ev, 'X') - startX) > tolerance || Math.abs(getCoord(ev, 'Y') - startY) > tolerance)) {
+                if (target && !moved && Math.abs(getCoord(ev, 'X') - startX) > 9 || Math.abs(getCoord(ev, 'Y') - startY) > 9) {
                     moved = true;
                 }
             }
 
             function onEnd(ev) {
                 if (target) {
-                    if (new Date() - startTime < 100 || !moved) {
+                    if (!moved) {
                         ev.preventDefault();
                         handler.call(target, ev, that);
                     }
@@ -432,13 +366,13 @@ var mobiscroll = mobiscroll || {};
 
             if (s.tap) {
                 el
-                    .on('touchstart.mbsc', onStart)
-                    .on('touchcancel.mbsc', onCancel)
-                    .on('touchmove.mbsc', onMove)
-                    .on('touchend.mbsc', onEnd);
+                    .on('touchstart.dw', onStart)
+                    .on('touchcancel.dw', onCancel)
+                    .on('touchmove.dw', onMove)
+                    .on('touchend.dw', onEnd);
             }
 
-            el.on('click.mbsc', function (ev) {
+            el.on('click.dw', function (ev) {
                 ev.preventDefault();
                 // If handler was not called on touchend, call it on click;
                 handler.call(this, ev, that);
@@ -448,19 +382,14 @@ var mobiscroll = mobiscroll || {};
         /**
          * Triggers an event
          */
-        that.trigger = function (name, ev) {
-            var ret,
-                i,
-                v,
-                s = [defaults, theme, preset, settings];
-
-            for (i = 0; i < 4; i++) {
-                v = s[i];
-                if (v && v[name]) {
-                    ret = v[name].call(el, ev || {}, that);
+        that.trigger = function (name, args) {
+            var ret;
+            args.push(that);
+            $.each([defaults, theme, preset, settings], function (i, v) {
+                if (v && v[name]) { // Call preset event
+                    ret = v[name].apply(el, args);
                 }
-            }
-
+            });
             return ret;
         };
 
@@ -513,4 +442,4 @@ var mobiscroll = mobiscroll || {};
         });
     }
 
-})(window, document);
+})(jQuery);

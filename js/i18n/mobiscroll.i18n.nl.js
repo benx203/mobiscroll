@@ -1,13 +1,13 @@
-// Nederlands
-(function () {
-    mobiscroll.i18n.nl = {
+(function ($) {
+    $.mobiscroll.i18n.nl = {
         // Core
         setText: 'Instellen',
         cancelText: 'Annuleren',
         clearText: 'Duidelijk',
         selectedText: '{count} gekozen',
         // Datetime component
-        dateFormat: 'dd-mm-yy',
+        dateFormat: 'dd/mm/yy',
+        dateOrder: 'ddmmyy',
         dayNames: ['zondag', 'maandag', 'Dinsdag', 'Woensdag', 'Donderdag', 'Vrijdag', 'Zaterdag'],
         dayNamesShort: ['zo', 'ma', 'di', 'wo', 'do', 'vr', 'za'],
         dayNamesMin: ['z', 'm', 'd', 'w', 'd', 'v', 'z'],
@@ -19,11 +19,11 @@
         monthText: 'Maand',
         secText: 'Seconden',
         timeFormat: 'HH:ii',
+        timeWheels: 'HHii',
         yearText: 'Jaar',
         nowText: 'Nu',
         pmText: 'pm',
         amText: 'am',
-        todayText: 'Vandaag',
         // Calendar component
         firstDay: 1,
         dateText: 'Datum',
@@ -56,4 +56,4 @@
         decimalSeparator: ',',
         thousandsSeparator: ' '
     };
-})();
+})(jQuery);

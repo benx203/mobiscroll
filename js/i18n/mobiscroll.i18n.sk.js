@@ -1,13 +1,13 @@
-// Slovencina
-(function () {
-    mobiscroll.i18n.sk = {
+(function ($) {
+    $.mobiscroll.i18n.sk = {
         // Core
         setText: 'Zadaj',
         cancelText: 'Zrušiť',
         clearText: 'Vymazať',
         selectedText: 'Označený: {count}',
         // Datetime component
-        dateFormat: 'd.m.yy',
+        dateFormat: 'dd/mm/yy',
+        dateOrder: 'ddmmy',
         dayNames: ['Nedeľa', 'Pondelok', 'Utorok', 'Streda', 'Štvrtok', 'Piatok', 'Sobota'],
         dayNamesShort: ['Ne', 'Po', 'Ut', 'St', 'Št', 'Pi', 'So'],
         dayNamesMin: ['N', 'P', 'U', 'S', 'Š', 'P', 'S'],
@@ -18,12 +18,12 @@
         monthNamesShort: ['Jan', 'Feb', 'Mar', 'Apr', 'Máj', 'Jún', 'Júl', 'Aug', 'Sep', 'Okt', 'Nov', 'Dec'],
         monthText: 'Mesiac',
         secText: 'Sekundy',
-        timeFormat: 'H:ii',
+        timeFormat: 'hh:ii A',
+        timeWheels: 'hhiiA',
         yearText: 'Rok',
         nowText: 'Teraz',
         amText: 'am',
         pmText: 'pm',
-        todayText: 'Dnes',
         // Calendar component
         firstDay: 1,
         dateText: 'Datum',
@@ -56,4 +56,4 @@
         decimalSeparator: ',',
         thousandsSeparator: ' '
     };
-})();
+})(jQuery);

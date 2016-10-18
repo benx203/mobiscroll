@@ -1,6 +1,5 @@
-// Magyar
-(function () {
-    mobiscroll.i18n.hu = {
+(function ($) {
+    $.mobiscroll.i18n.hu = {
         // Core
         setText: 'OK',
         cancelText: 'Mégse',
@@ -8,6 +7,7 @@
         selectedText: '{count} kiválasztva',
         // Datetime component
         dateFormat: 'yy.mm.dd.',
+        dateOrder: 'yymmdd',
         dayNames: ['Vasárnap', 'Hétfő', 'Kedd', 'Szerda', 'Csütörtök', 'Péntek', 'Szombat'],
         dayNamesShort: ['Va', 'Hé', 'Ke', 'Sze', 'Csü', 'Pé', 'Szo'],
         dayNamesMin: ['V', 'H', 'K', 'Sz', 'Cs', 'P', 'Sz'],
@@ -19,7 +19,8 @@
         monthNamesShort: ['Jan', 'Feb', 'Már', 'Ápr', 'Máj', 'Jún', 'Júl', 'Aug', 'Szep', 'Okt', 'Nov', 'Dec'],
         monthText: 'Hónap',
         secText: 'Másodperc',
-        timeFormat: 'H:ii',
+        timeFormat: 'HH:ii',
+        timeWheels: 'HHii',
         yearText: 'Év',
         nowText: 'Most',
         pmText: 'de',
@@ -63,4 +64,4 @@
         decimalSeparator: ',',
         thousandsSeparator: ' '
     };
-})();
+})(jQuery);

@@ -1,6 +1,5 @@
-// Italiano 
-(function () {
-    mobiscroll.i18n.it = {
+(function ($) {
+    $.mobiscroll.i18n.it = {
         // Core
         setText: 'OK',
         cancelText: 'Annulla',
@@ -8,7 +7,8 @@
         selectedText: '{count} selezionato',
         selectedPluralText: '{count} selezionati',
         // Datetime component
-        dateFormat: 'dd/mm/yy',
+        dateFormat: 'dd-mm-yyyy',
+        dateOrder: 'ddmmyy',
         dayNames: ['Domenica', 'Lunedì', 'Mertedì', 'Mercoledì', 'Giovedì', 'Venerdì', 'Sabato'],
         dayNamesShort: ['Do', 'Lu', 'Ma', 'Me', 'Gi', 'Ve', 'Sa'],
         dayNamesMin: ['D', 'L', 'M', 'M', 'G', 'V', 'S'],
@@ -20,11 +20,11 @@
         monthText: 'Mese',
         secText: 'Secondi',
         timeFormat: 'HH:ii',
+        timeWheels: 'HHii',
         yearText: 'Anno',
         nowText: 'Ora',
         pmText: 'pm',
         amText: 'am',
-        todayText: 'Oggi',
         // Calendar component
         firstDay: 1,
         dateText: 'Data',
@@ -57,4 +57,4 @@
         decimalSeparator: ',',
         thousandsSeparator: ' '
     };
-})();
+})(jQuery);

@@ -1,5 +1,4 @@
-// فارسی
-(function () {
+(function ($) {
 
     var JalaliDate = {
         gDaysInMonth: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
@@ -113,7 +112,7 @@
         return [jy, jm, jd];
     };
 
-    mobiscroll.i18n.fa = {
+    $.mobiscroll.i18n.fa = {
         // Core
         setText: 'تاييد',
         cancelText: 'انصراف',
@@ -121,6 +120,7 @@
         selectedText: '{count} منتخب',
         // Datetime component
         dateFormat: 'yy/mm/dd',
+        dateOrder: 'yymmdd',
         dayNames: ['يکشنبه', 'دوشنبه', 'سه‌شنبه', 'چهارشنبه', 'پنج‌شنبه', 'جمعه', 'شنبه'],
         dayNamesShort: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
         dayNamesMin: ['ی', 'د', 'س', 'چ', 'پ', 'ج', 'ش'],
@@ -132,11 +132,11 @@
         monthText: 'ماه',
         secText: 'ثانيه',
         timeFormat: 'HH:ii',
+        timeWheels: 'HHii',
         yearText: 'سال',
         nowText: 'اکنون',
         amText: 'ب',
         pmText: 'ص',
-        todayText: 'امروز',
         getYear: function (date) {
             return JalaliDate.gregorianToJalali(date.getFullYear(), (date.getMonth() + 1), date.getDate())[0];
         },
@@ -204,4 +204,4 @@
         backText: 'پشت',
         undoText: 'واچیدن'
     };
-})();
+})(jQuery);

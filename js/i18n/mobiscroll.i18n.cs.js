@@ -1,13 +1,13 @@
-// Cestina
-(function () {
-    mobiscroll.i18n.cs = {
+(function ($) {
+    $.mobiscroll.i18n.cs = {
         // Core
         setText: 'Zadej',
         cancelText: 'Storno',
         clearText: 'Vymazat',
         selectedText: 'Označený: {count}',
         // Datetime component
-        dateFormat: 'dd.mm.yy',
+        dateFormat: 'dd/mm/yy',
+        dateOrder: 'ddmmy',
         dayNames: ['Neděle', 'Pondělí', 'Úterý', 'Středa', 'Čtvrtek', 'Pátek', 'Sobota'],
         dayNamesShort: ['Ne', 'Po', 'Út', 'St', 'Čt', 'Pá', 'So'],
         dayNamesMin: ['N', 'P', 'Ú', 'S', 'Č', 'P', 'S'],
@@ -18,12 +18,12 @@
         monthNamesShort: ['Led', 'Úno', 'Bře', 'Dub', 'Kvě', 'Čer', 'Čvc', 'Spr', 'Zář', 'Říj', 'Lis', 'Pro'],
         monthText: 'Měsíc',
         secText: 'Sekundy',
-        timeFormat: 'HH:ii',
+        timeFormat: 'hh:ii A',
+        timeWheels: 'hhiiA',
         yearText: 'Rok',
         nowText: 'Teď',
         amText: 'am',
         pmText: 'pm',
-        todayText: 'Dnes',
         // Calendar component
         firstDay: 1,
         dateText: 'Datum',
@@ -56,4 +56,4 @@
         decimalSeparator: ',',
         thousandsSeparator: ' '
     };
-})();
+})(jQuery);

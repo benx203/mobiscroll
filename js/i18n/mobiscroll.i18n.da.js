@@ -2,8 +2,8 @@
 /*
  * Translation by: Mikkel Bonde, Apacta A/S <mikbonde@gmail.com>
  */
-(function () {
-    mobiscroll.i18n.da = {
+(function ($) {
+    $.mobiscroll.i18n.da = {
         // Core
         setText: 'Sæt',
         cancelText: 'Annuller',
@@ -12,6 +12,7 @@
         selectedPluralText: '{count} valgt',
         // Datetime component
         dateFormat: 'dd/mm/yy',
+        dateOrder: 'ddmmyy',
         dayNames: ['Søndag', 'Mandag', 'Tirsdag', 'Onsdag', 'Torsdag', 'Fredag', 'Lørdag'],
         dayNamesShort: ['Søn', 'Man', 'Tir', 'Ons', 'Tor', 'Fre', 'Lør'],
         dayNamesMin: ['S', 'M', 'T', 'O', 'T', 'F', 'L'],
@@ -24,10 +25,10 @@
         secText: 'Sekunder',
         amText: 'am',
         pmText: 'pm',
-        timeFormat: 'HH.ii',
+        timeFormat: 'HH:ii',
+        timeWheels: 'HHii',
         yearText: 'År',
         nowText: 'Nu',
-        todayText: 'I dag',
         // Calendar component
         firstDay: 1,
         dateText: 'Dato',
@@ -57,4 +58,4 @@
         backText: 'Tilbage',
         undoText: 'Fortryd'
     };
-})();
+})(jQuery);
